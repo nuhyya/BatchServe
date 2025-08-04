@@ -1,0 +1,128 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - LOAD_BALANCER_URL=http://load-balancer:8082
+    depends_on:
+      - load-balancer
+    volumes:
+      - ./data:/app/data
+
+  load-balancer:
+    build: ./load-balancer
+    ports:
+      - "8082:8082"
+    environment:
+      - SERVER_MANAGER_URL=http://server-manager:8083
+      - ML_PREDICTOR_URL=http://ml-predictor:5000
+    depends_on:
+      - server-manager
+      - ml-predictor
+    volumes:
+      - ./data:/app/data
+  server-manager:
+    build: ./server-manager
+    ports:
+      - "8083:8083"
+    environment:
+      - MODEL_SERVER_BASE_PORT=8084
+      - SERVER_PORT=8083
+    command: >
+      java -jar app.jar --server.port=8083
+    depends_on:
+      - model-server-1
+      - model-server-2
+      - model-server-3
+    volumes:
+      - ./data:/app/data
+  model-server-1:
+    build: ./servers
+    ports:
+      - "8084:8084"
+    environment:
+      - SERVER_ID=server-1
+      - SERVER_PORT=8084
+    volumes:
+      - ./data:/app/data
+
+  model-server-2:
+    build: ./servers
+    ports:
+      - "8085:8085"
+    environment:
+      - SERVER_ID=server-2
+      - SERVER_PORT=8085
+    volumes:
+      - ./data:/app/data
+
+  model-server-3:
+    build: ./servers
+    ports:
+      - "8086:8086"
+    environment:
+      - SERVER_ID=server-3
+      - SERVER_PORT=8086
+    volumes:
+      - ./data:/app/data
+
+  model-server-4:
+    build: ./servers
+    ports:
+      - "8087:8087"
+    environment:
+      - SERVER_ID=server-4
+      - SERVER_PORT=8087
+    volumes:
+      - ./data:/app/data
+    profiles:
+      - scaling
+
+  model-server-5:
+    build: ./servers
+    ports:
+      - "8088:8088"
+    environment:
+      - SERVER_ID=server-5
+      - SERVER_PORT=8088
+    volumes:
+      - ./data:/app/data
+    profiles:
+      - scaling
+
+  model-server-6:
+    build: ./servers
+    ports:
+      - "8089:8089"
+    environment:
+      - SERVER_ID=server-6
+      - SERVER_PORT=8089
+    volumes:
+      - ./data:/app/data
+    profiles:
+      - scaling
+
+  ml-predictor:
+    build: ./load-predictor
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+
+  dashboard:
+    build: ./dashboard
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_GATEWAY_URL=http://localhost:8080
+      - REACT_APP_LOAD_BALANCER_URL=http://localhost:8082
+      - REACT_APP_SERVER_MANAGER_URL=http://localhost:8083
+    depends_on:
+      - api-gateway
+
+volumes:
+  data:
+
