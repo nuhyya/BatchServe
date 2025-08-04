@@ -3,6 +3,8 @@
 A **smart load balancer** that routes ML model requests to different servers based on their current load and predicted resource usage. This system demonstrates load balancing, auto-scaling, circuit breaker patterns, and ML-based prediction.
 
 ## System Architecture
+<img width="1231" height="566" alt="Arch" src="https://github.com/user-attachments/assets/61808091-dd3d-4264-b571-c26bcb843c4f" />
+
 
 
 ## Project Structure
@@ -12,36 +14,45 @@ BatchServe/
 ├── docker-compose.yml          # Container orchestration
 ├── README.md                   # This file
 ├── dashboard/                  # React frontend
-│   ├── src/App.js
-│   ├── src/App.css
+│   ├── Dockerfile
 │   ├── package.json
-│   └── Dockerfile
+│   └── src/
+│       ├── App.css
+│       ├── App.js
+│       ├── index.js
+│       ├── components/
+│       │   ├── Dashboard.js
+│       │   ├── Metrics.js
+│       │   ├── Servers.js
+│       │   └── Traffic.js
+│       └── utils/
+│           └── helpers.js
 ├── api-gateway/                # Request batching and routing
-│   ├── src/main/java/
+│   ├── Dockerfile
 │   ├── pom.xml
-│   └── Dockerfile
+│   └── src/main/java/
 ├── load-balancer/              # Smart load balancing logic
-│   ├── src/main/java/
+│   ├── Dockerfile
 │   ├── pom.xml
-│   └── Dockerfile
+│   └── src/main/java/
 ├── server-manager/             # Server monitoring and auto-scaling
-│   ├── src/main/java/
+│   ├── Dockerfile
 │   ├── pom.xml
-│   └── Dockerfile
+│   └── src/main/java/
 ├── servers/                    # Model server instances
-│   ├── src/main/java/
+│   ├── Dockerfile
 │   ├── pom.xml
-│   └── Dockerfile
-├── load-predictor/            # ML prediction service
+│   └── src/main/java/
+├── load-predictor/             # ML prediction service
+│   ├── Dockerfile
 │   ├── app.py
-│   ├── requirements.txt
-│   └── Dockerfile
-├── data/                      # Shared data storage
-└── scripts/                   # Utility scripts
+│   └── requirements.txt
+├── scripts/                    # Utility scripts
     ├── build-all.sh
     ├── start-system.sh
     ├── stop-system.sh
-    ├── scale-up.sh
+    └── scale-up.sh
+
 ```
 
 ## Quick Start
