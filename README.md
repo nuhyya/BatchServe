@@ -214,10 +214,6 @@ curl -X POST http://localhost:8080/api/test-traffic/burst
 - `SERVER_MANAGER_URL`: Server manager endpoint
 - `ML_PREDICTOR_URL`: ML predictor endpoint
 
-### Scaling Thresholds
-- **Auto-scale trigger**: 100+ requests for any model type
-- **Circuit breaker**: 3 consecutive failures
-- **Recovery timeout**: 30 seconds
 
 ## System Flow
 
